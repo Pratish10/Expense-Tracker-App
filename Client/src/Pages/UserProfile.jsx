@@ -3,6 +3,7 @@ import CustomButton from "../components/CustomButton";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { updateUser } from "../store/Slice/userActions";
+import toast from "react-hot-toast";
 
 const UserProfile = () => {
   const [name, setName] = useState("");
@@ -41,26 +42,40 @@ const UserProfile = () => {
     },
   };
 
-  const submitHandler = (event) => {
+  const submitHandler = async (event) => {
     event.preventDefault();
-    const updateUserData = {
-      name,
-      email,
-      phoneNumber,
-      address,
-      city,
-      country,
-      postalCode,
-    };
-    const userId = user._id;
-    dispatch(updateUser(userId, updateUserData, token));
-    setName("");
-    setEmail("");
-    setPhoneNumber("");
-    setAddress("");
-    setCity("");
-    setCountry("");
-    setPostalCode("");
+    try {
+      if (!name || !email) {
+        throw new Error("Name and email are required and rest are optional!");
+      }
+      const updateUserData = {
+        name,
+        email,
+        phoneNumber,
+        address,
+        city,
+        country,
+        postalCode,
+      };
+      const success = await dispatch(
+        updateUser(user._id, updateUserData, token)
+      );
+      if (success) {
+        toast.success("User Updated Successfully!");
+        setName("");
+        setEmail("");
+        setPhoneNumber("");
+        setAddress("");
+        setCity("");
+        setCountry("");
+        setPostalCode("");
+      } else {
+        throw new Error("Failed to update user!");
+      }
+    } catch (error) {
+      console.log(error.message);
+      toast.error(error.message);
+    }
   };
 
   return (
@@ -96,7 +111,6 @@ const UserProfile = () => {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  disabled
                   type="email"
                   autoComplete="email"
                   variant="outlined"
