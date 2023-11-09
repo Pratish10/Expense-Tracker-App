@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const backendUrl = "https://expense-tracker-app-backend-74ua.onrender.com";
-const backendUrl = "http://localhost:8000";
+const backendUrl = "https://expense-tracker-app-backend-w7e8.onrender.com";
+// const backendUrl = "http://localhost:8000";
 
 // user urls
 export const registerUser = (input) =>

@@ -3,6 +3,7 @@ const cors = require("cors");
 const connectDB = require("./db");
 const passport = require("passport");
 require("dotenv").config();
+const morgan = require("morgan");
 
 const userRoutes = require("./Routes/userRoutes");
 const incomeRoutes = require("./Routes/incomeRoutes");
@@ -17,6 +18,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(passport.initialize());
+app.use(morgan("dev"));
 require("./Middlewares/jwt")(passport);
 
 connectDB();
