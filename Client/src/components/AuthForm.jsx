@@ -19,6 +19,7 @@ import { loginUser, registerUser } from "../store/Slice/userActions";
 import generateAvatar from "../Utils/generateAvatar";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const AuthForm = () => {
   const [name, setName] = React.useState("");
@@ -32,6 +33,8 @@ const AuthForm = () => {
   const [emailError, setEmailError] = React.useState("");
   const [passwordError, setPasswordError] = React.useState("");
 
+  const [loading, setLoading] = React.useState(false);
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -80,6 +83,7 @@ const AuthForm = () => {
     event.preventDefault();
 
     if (validateForm()) {
+    setLoading(true);
       if (variant === "LOGIN") {
         try {
           const loginData = {
@@ -96,6 +100,8 @@ const AuthForm = () => {
         } catch (error) {
           toast.error(error.message);
           console.log(error.message);
+        } finally {
+          setLoading(false);
         }
       }
 
@@ -122,6 +128,8 @@ const AuthForm = () => {
         } catch (error) {
           console.log(error.message);
           toast.error(error.message);
+        } finally {
+          setLoading(false);
         }
       }
     }
@@ -243,7 +251,8 @@ const AuthForm = () => {
             </Grid>
             <Grid item xs={12} sx={{ mt: 2 }}>
               <CustomButton type="submit">
-                {variant === "LOGIN" ? "Sign In" : "Register"}
+                {loading ? <CircularProgress /> : variant === "LOGIN" ? "Sign In" : "Register"}
+                
               </CustomButton>
             </Grid>
           </Grid>
