@@ -274,7 +274,7 @@ const AuthForm = () => {
             }}
           >
             {variant === "LOGIN"
-              ? "New to Chatty App?"
+              ? "New to Expense Tracker App?"
               : "Already have an account?"}
           </Typography>
           <Typography
